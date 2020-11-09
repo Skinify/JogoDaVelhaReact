@@ -6,8 +6,11 @@ interface Props{
 }
 
 export const Container = styled.div<Props>`
-    background-color:red;
     height:200px;
     width:200px;
-    margin:6px;
-`
+    background-color:#333;
+    font-size: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`   
