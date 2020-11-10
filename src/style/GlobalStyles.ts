@@ -12,6 +12,9 @@ export default createGlobalStyle`
     html,body,#root{
         height:100vh;
         background-color:#333;
+        display:flex;
+        flex-direction:column;
+        flex:1;
     }
 
     input:focus,button:focus{

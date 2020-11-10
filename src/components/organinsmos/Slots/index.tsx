@@ -11,6 +11,7 @@ const Slots: React.FC = () => {
     const [slots, setSlots] = useState<Array<ISlot>>([]);
     const [sinal, setSinal] = useState<number>(config.SINAIS.PRIMEIRO_SINAL);
     const [rodada, setRodada] = useState<number>(1);
+    const [fimJogo, setFimJogo] = useState<Boolean>(false);
 
     useEffect(()=>{
         inicializar();
@@ -34,15 +35,18 @@ const Slots: React.FC = () => {
     }
 
     const toggleSlot = (id:number) => {
-        let novosSlots = [...slots];
-        if(!novosSlots[id].ativo){
-            novosSlots[id].ativo = true;
-            novosSlots[id].conteudo = sinal;
-            setSlots(novosSlots);
-            setRodada(rodada+1)
-            variarSinal();
-            if(rodada > 4){
-                verificarVitoria();
+        if(!fimJogo){
+            let novosSlots = [...slots];
+            if(!novosSlots[id].ativo){
+                novosSlots[id].ativo = true;
+                novosSlots[id].conteudo = sinal;
+                novosSlots[id].vencedor = false;
+                setSlots(novosSlots);
+                setRodada(rodada+1)
+                variarSinal();
+                if(rodada > 4){
+                    verificarVitoria();
+                }
             }
         }
     }
@@ -98,7 +102,20 @@ const Slots: React.FC = () => {
                 slot.vencedor = true;
             }
         })
+        setFimJogo(true);
         setSlots(novos);
+
+        /*switch(vencedor){
+            case config.PRIMEIRO_JOGADOR: {
+                alert("Primeiro jogador venceu")
+                break
+            }
+            case config.SEGUNDO_JOGADOR: {
+                alert("Segundo jogador venceu")
+                break
+            }
+        }*/
+
     }
 
     return(

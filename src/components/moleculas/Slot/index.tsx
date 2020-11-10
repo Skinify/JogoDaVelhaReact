@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container} from './styles'
+import {Container, SinalDiv} from './styles'
 import {BsCircle, BsCircleFill} from 'react-icons/bs'
 
 import config from '../../../config/gerais'
@@ -32,7 +32,9 @@ const Slot: React.FC<ISlot> = ({id,ativo,conteudo,click, vencedor}) => {
 
     return(
         <Container onClick={() => click(id)}>
-            {exibir()}
+            <SinalDiv vencedor={vencedor}>
+                {exibir()}
+            </SinalDiv>
         </Container>
     );
 }

@@ -4,15 +4,14 @@ export const Container = styled.div`
     display:flex;
     flex-direction:column;
     align-items:center;
-    height:100vh;
-    max-width:1000px;
+    max-width:500px;
     margin:auto;
     position:relative;
 `
 
 export const TituloSuperior = styled.a`
-    font-size:80px;
-    letter-spacing:50px;
+    font-size:40px;
+    letter-spacing:15px;
     font-weight:lighter;
     text-transform:uppercase;
     padding:12px 24px;
@@ -20,14 +19,13 @@ export const TituloSuperior = styled.a`
 `
 
 export const TituloInferior = styled.a`
-    font-size:300px;
+    font-size:100px;
     font-weight:bold;
     letter-spacing:30px;
     color:#db4040;
     text-transform:uppercase;
-    margin-top:-100px;
     letter-spacing:-5px;
-    margin-right: -40px;
+    margin-top:-40px;
 `
 
 export const Row = styled.div`
