@@ -75,7 +75,7 @@ const Slots: React.FC = () => {
         let valorPrimeiroSinal = 0;
         let valorSegundoSinal = 0;
 
-        /*
+        
 
         Object.keys(padraoVitoria).map(key => {
             (padraoVitoria as any)[key].map((valor: number) => {
@@ -85,19 +85,23 @@ const Slots: React.FC = () => {
                 if(slotsSegundoSinal.includes(valor)){
                     valorSegundoSinal++;
                 }
-            })
-            if(valorPrimeiroSinal > 2){
-                alert("Primeiro player ganhoou")
-                return;
-            }
-    
-            if(valorSegundoSinal > 2){
-                alert("Segundo player ganhoou")
-                return;
-            }
-        })
-*/
 
+                if(valorPrimeiroSinal > 2){
+                    alert("Primeiro player ganhoou")
+                    valorSegundoSinal = 0;
+                    return;
+                }
+        
+                if(valorSegundoSinal > 2){
+                    alert("Segundo player ganhoou")
+                    valorPrimeiroSinal = 0;
+                    return;
+                }
+
+            })
+            valorPrimeiroSinal = 0;
+            valorSegundoSinal = 0;
+        })
     }
 
     return(
