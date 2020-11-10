@@ -1,15 +1,15 @@
-import { platform } from 'os'
 import React, { useState, useEffect } from 'react'
-import Slot from '../../moleculas/Slot'
-import {ISlot} from '../../moleculas/Slot'
-import config from '../../../config/sinais'
+import Slot, {ISlot} from '../../moleculas/Slot'
+
+import config from '../../../config/gerais'
 import padraoVitoria from '../../../config/padraoVitoria'
+
 import {Container} from './styles'
 
 const Slots: React.FC = () => {
 
     const [slots, setSlots] = useState<Array<ISlot>>([]);
-    const [sinal, setSinal] = useState<number>(config.PrimereiroSinal);
+    const [sinal, setSinal] = useState<number>(config.SINAIS.PRIMEIRO_SINAL);
     const [rodada, setRodada] = useState<number>(1);
 
     useEffect(()=>{
@@ -17,16 +17,15 @@ const Slots: React.FC = () => {
     }, [])
 
     const inicializar = function(){
-
         let todosSlots: Array<ISlot> = [];
         let count = 0;
-
         while(count < 9){
             let novoSlot: ISlot = {
                 id:count,
                 ativo:false,
-                conteudo:config.Nulo,
-                click: function(){}
+                conteudo:config.SINAIS.NULO,
+                click: function(){},
+                vencedor:false
             }
             todosSlots.push(novoSlot)
             count++;
@@ -49,66 +48,64 @@ const Slots: React.FC = () => {
     }
 
     const variarSinal = () =>{
-        if(sinal == config.SegundoSinal){
-            setSinal(config.PrimereiroSinal)
+        if(sinal === config.SINAIS.SEGUNDO_SINAL){
+            setSinal(config.SINAIS.PRIMEIRO_SINAL)
         }else{
-            setSinal(config.SegundoSinal)
+            setSinal(config.SINAIS.SEGUNDO_SINAL)
         }
     }
-
+    
     const verificarVitoria = () => {
         let slotsPrimeiroSinal:Array<number> = []
         let slotsSegundoSinal:Array<number> = []
         slots.map(slot => {
-            if(slot.conteudo != config.Nulo){
-                if(slot.conteudo == config.PrimereiroSinal){
+            if(slot.conteudo !== config.SINAIS.NULO){
+                if(slot.conteudo === config.SINAIS.PRIMEIRO_SINAL){
                     slotsPrimeiroSinal.push(slot.id)
                 }else{
                     slotsSegundoSinal.push(slot.id)
                 }
             }
         })
-        
-        console.log(slotsPrimeiroSinal)
-        console.log(slotsSegundoSinal)
-
         let valorPrimeiroSinal = 0;
         let valorSegundoSinal = 0;
-
-        
-
         Object.keys(padraoVitoria).map(key => {
             (padraoVitoria as any)[key].map((valor: number) => {
                 if(slotsPrimeiroSinal.includes(valor)){
                     valorPrimeiroSinal++;
+                    if(valorPrimeiroSinal > 2){
+                        anunciarVencedor((padraoVitoria as any)[key], config.PRIMEIRO_JOGADOR);
+                        return;
+                    }
                 }   
                 if(slotsSegundoSinal.includes(valor)){
                     valorSegundoSinal++;
+                    if(valorSegundoSinal > 2){
+                        anunciarVencedor((padraoVitoria as any)[key], config.SEGUNDO_JOGADOR);
+                        return;
+                    }
                 }
-
-                if(valorPrimeiroSinal > 2){
-                    alert("Primeiro player ganhoou")
-                    valorSegundoSinal = 0;
-                    return;
-                }
-        
-                if(valorSegundoSinal > 2){
-                    alert("Segundo player ganhoou")
-                    valorPrimeiroSinal = 0;
-                    return;
-                }
-
             })
             valorPrimeiroSinal = 0;
             valorSegundoSinal = 0;
         })
     }
 
+    const anunciarVencedor = (slotsPreenchidos:Array<number>, vencedor:number ) =>{
+        let novos = [...slots];
+        novos.map(slot => {
+            if(slotsPreenchidos.includes(slot.id)){
+                slot.vencedor = true;
+            }
+        })
+        setSlots(novos);
+    }
+
     return(
         <Container>
             {slots?.map((slot) => {
                 return(
-                    <Slot key={slot.id} id={slot.id} ativo={slot.ativo} conteudo={slot.conteudo} click={toggleSlot}></Slot>
+                    <Slot key={slot.id} id={slot.id} ativo={slot.ativo} conteudo={slot.conteudo} vencedor={slot.vencedor} click={toggleSlot}></Slot>
                 )
             })}
         </Container>
